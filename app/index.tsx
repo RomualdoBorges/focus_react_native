@@ -1,5 +1,8 @@
+import ActionButton from "@/components/ActionButton";
+import Timer from "@/components/Timer";
 import { useState } from "react";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
+import FokusButton from "../components/FokusButton";
 
 const pomodoro = [
   {
@@ -31,24 +34,16 @@ export default function Index() {
       <View style={styles.actions}>
         <View style={styles.context}>
           {pomodoro.map((p) => (
-            <Pressable
+            <ActionButton
               key={p.id}
-              style={timerType.id === p.id ? styles.contextButtonActive : null}
+              active={timerType.id === p.id}
               onPress={() => setTimerType(p)}
-            >
-              <Text style={styles.contextButtonText}>{p.display}</Text>
-            </Pressable>
+              display={p.display}
+            />
           ))}
         </View>
-        <Text style={styles.timer}>
-          {new Date(timerType.initialValue * 1000).toLocaleTimeString("pt-BR", {
-            minute: "2-digit",
-            second: "2-digit",
-          })}
-        </Text>
-        <Pressable style={styles.button}>
-          <Text style={styles.buttonText}>Começar</Text>
-        </Pressable>
+        <Timer totalSeconds={timerType.initialValue} />
+        <FokusButton />
       </View>
 
       <View style={styles.footer}>
@@ -86,31 +81,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-  },
-  contextButtonActive: {
-    backgroundColor: "#144480",
-    borderRadius: 8,
-  },
-  contextButtonText: {
-    fontSize: 12.5,
-    color: "#FFFFFF",
-    padding: 8,
-  },
-  timer: {
-    fontSize: 54,
-    color: "#FFFFFF",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  button: {
-    backgroundColor: "#8872FF",
-    borderRadius: 32,
-    padding: 8,
-  },
-  buttonText: {
-    textAlign: "center",
-    color: "#021123",
-    fontSize: 18,
   },
   footer: {
     width: "80%",
