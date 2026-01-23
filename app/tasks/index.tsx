@@ -1,25 +1,43 @@
+import useTaskContext from "@/components/context/useTaskContext";
 import FokusButton from "@/components/FokusButton";
 import { IconPlus } from "@/components/Icons";
 import TaskItem from "@/components/TaskItem";
 import { router } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 
 export default function Tasks() {
+  const { tasks } = useTaskContext();
+
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
-        <Text style={styles.text}>Listas de tarefas:</Text>
         <View style={styles.inner}>
-          <TaskItem completed={true} text="Estudar React" />
-          <TaskItem completed={false} text="Estudar React Native" />
+          <FlatList
+            data={tasks}
+            renderItem={({ item }) => (
+              <TaskItem
+                completed={item.completed}
+                text={item.description}
+                key={item.id}
+              />
+            )}
+            keyExtractor={(item) => String(item.id)}
+            ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
+            ListHeaderComponent={
+              <Text style={styles.text}>Listas de tarefas:</Text>
+            }
+            ListFooterComponent={
+              <View style={{ marginTop: 16, marginBottom: 32 }}>
+                <FokusButton
+                  outline={true}
+                  title="Adicionar nova tarefa"
+                  icon={<IconPlus />}
+                  onPress={() => router.navigate("/add-task")}
+                />
+              </View>
+            }
+          />
         </View>
-
-        <FokusButton
-          outline={true}
-          title="Adicionar nova tarefa"
-          icon={<IconPlus />}
-          onPress={() => router.navigate("/add-task")}
-        />
       </View>
     </View>
   );
@@ -39,6 +57,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#FFFFFF",
     fontSize: 26,
+    marginBottom: 16,
   },
   inner: {
     gap: 8,
