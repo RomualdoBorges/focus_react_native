@@ -5,13 +5,24 @@ interface FokusButtonProps {
   title: string;
   onPress: () => void;
   icon?: ReactNode;
+  outline?: boolean;
 }
 
-const FokusButton: React.FC<FokusButtonProps> = ({ title, onPress, icon }) => {
+const FokusButton: React.FC<FokusButtonProps> = ({
+  title,
+  onPress,
+  icon,
+  outline,
+}) => {
   return (
-    <Pressable style={styles.button} onPress={onPress}>
+    <Pressable
+      style={[styles.button, outline && styles.outlineButton]}
+      onPress={onPress}
+    >
       {icon}
-      <Text style={styles.buttonText}>{title}</Text>
+      <Text style={[styles.buttonText, outline && styles.outlineButtonText]}>
+        {title}
+      </Text>
     </Pressable>
   );
 };
@@ -28,9 +39,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  outlineButton: {
+    backgroundColor: "transparent",
+    borderColor: "#8872FF",
+    borderWidth: 2,
+  },
   buttonText: {
     textAlign: "center",
     color: "#021123",
     fontSize: 18,
+  },
+  outlineButtonText: {
+    color: "#8872FF",
   },
 });
