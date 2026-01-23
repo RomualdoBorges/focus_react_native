@@ -1,105 +1,19 @@
-import ActionButton from "@/components/ActionButton";
-import { IconPause, IconPlay } from "@/components/Icons";
-import Timer from "@/components/Timer";
-import { useRef, useState } from "react";
-import {
-  Image,
-  ImageSourcePropType,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import FokusButton from "../components/FokusButton";
-
-type PomodoroType = {
-  id: string;
-  initialValue: number;
-  image: ImageSourcePropType;
-  display: string;
-};
-
-const pomodoro: PomodoroType[] = [
-  {
-    id: "focus",
-    initialValue: 25 * 60,
-    image: require("./pomodoro.png"),
-    display: "Foco",
-  },
-  {
-    id: "short",
-    initialValue: 5 * 60,
-    image: require("./short.png"),
-    display: "Pausa curta",
-  },
-  {
-    id: "long",
-    initialValue: 15 * 60,
-    image: require("./long.png"),
-    display: "Pausa longa",
-  },
-];
+import FokusButton from "@/components/FokusButton";
+import { Image, StyleSheet, Text, View } from "react-native";
 
 export default function Index() {
-  const [timerType, setTimerType] = useState<PomodoroType>(pomodoro[0]);
-  const [seconds, setSeconds] = useState<number>(pomodoro[0].initialValue);
-  const [timerRunning, setTimerRunning] = useState<boolean>(false);
-
-  const timerRef = useRef<number | null>(null);
-
-  const clear = () => {
-    if (timerRef.current !== null) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-      setTimerRunning(false);
-    }
-  };
-
-  const toggleTimerType = (newTimerType: PomodoroType) => {
-    setTimerType(newTimerType);
-    setSeconds(newTimerType.initialValue);
-    clear();
-  };
-
-  const toggleTimer = () => {
-    if (timerRef.current) {
-      clear();
-      return;
-    }
-
-    setTimerRunning(true);
-
-    const id = setInterval(() => {
-      setSeconds((oldState) => {
-        if (oldState === 0) {
-          clear();
-          return timerType.initialValue;
-        }
-
-        return oldState - 1;
-      });
-    }, 1000);
-    timerRef.current = id;
-  };
-
   return (
     <View style={styles.container}>
-      <Image source={timerType.image} />
-      <View style={styles.actions}>
-        <View style={styles.context}>
-          {pomodoro.map((p) => (
-            <ActionButton
-              key={p.id}
-              active={timerType.id === p.id}
-              onPress={() => toggleTimerType(p)}
-              display={p.display}
-            />
-          ))}
-        </View>
-        <Timer totalSeconds={seconds} />
+      <Image source={require("../assets/images/logo.png")} />
+      <View style={styles.inner}>
+        <Text style={styles.title}>
+          Otimize sua{"\n"} produtividade,{"\n"}
+          <Text style={styles.bold}>mergulhe no que{"\n"} importa</Text>
+        </Text>
+        <Image source={require("../assets/images/home.png")} />
         <FokusButton
-          title={timerRunning ? "Pausar" : "Começar"}
-          icon={timerRunning ? <IconPause /> : <IconPlay />}
-          onPress={toggleTimer}
+          title="Quero Iniciar!"
+          onPress={() => console.log("navegar")}
         />
       </View>
 
@@ -121,23 +35,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#021223",
     gap: 40,
   },
-  text: {
+  inner: {
+    gap: 16,
+  },
+  title: {
     color: "#FFFFFF",
+    textAlign: "center",
+    fontSize: 26,
   },
-  actions: {
-    paddingVertical: 24,
-    paddingHorizontal: 24,
-    backgroundColor: "#14448080",
-    width: "80%",
-    borderRadius: 32,
-    borderWidth: 2,
-    borderColor: "#144480",
-    gap: 32,
-  },
-  context: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
+  bold: {
+    fontWeight: "bold",
   },
   footer: {
     width: "80%",

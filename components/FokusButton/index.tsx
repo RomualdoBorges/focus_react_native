@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, Text } from "react-native";
 interface FokusButtonProps {
   title: string;
   onPress: () => void;
-  icon: ReactNode;
+  icon?: ReactNode;
 }
 
 const FokusButton: React.FC<FokusButtonProps> = ({ title, onPress, icon }) => {
