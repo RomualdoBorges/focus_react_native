@@ -83,7 +83,7 @@ export default function Pomodoro() {
 
   return (
     <View style={styles.container}>
-      <Image source={timerType.image} />
+      <Image source={timerType.image} style={styles.image} />
       <View style={styles.actions}>
         <View style={styles.context}>
           {pomodoro.map((p) => (
@@ -120,6 +120,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#021223",
     gap: 40,
+  },
+  image: {
+    width: 250,
+    height: 250,
+    resizeMode: "contain",
   },
   text: {
     color: "#FFFFFF",

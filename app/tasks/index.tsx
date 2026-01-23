@@ -6,7 +6,7 @@ import { router } from "expo-router";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 
 export default function Tasks() {
-  const { tasks } = useTaskContext();
+  const { tasks, deleteTask, toggleTaskCompleted } = useTaskContext();
 
   return (
     <View style={styles.container}>
@@ -18,7 +18,9 @@ export default function Tasks() {
               <TaskItem
                 completed={item.completed}
                 text={item.description}
-                key={item.id}
+                onPressDelete={() => deleteTask(item.id)}
+                onToggleComplete={() => toggleTaskCompleted(item.id)}
+                onPressEdit={() => router.navigate(`/edit-task/${item.id}`)}
               />
             )}
             keyExtractor={(item) => String(item.id)}
@@ -35,6 +37,11 @@ export default function Tasks() {
                   onPress={() => router.navigate("/add-task")}
                 />
               </View>
+            }
+            ListEmptyComponent={
+              <Text style={styles.emptyText}>
+                Ainda não há tarefas na sua lista, {"\n"}que tal adicionar?
+              </Text>
             }
           />
         </View>
@@ -61,5 +68,13 @@ const styles = StyleSheet.create({
   },
   inner: {
     gap: 8,
+  },
+  emptyText: {
+    textAlign: "center",
+    color: "#98A0A8",
+    fontSize: 18,
+    marginTop: 40,
+    marginBottom: 40,
+    fontWeight: "bold",
   },
 });
